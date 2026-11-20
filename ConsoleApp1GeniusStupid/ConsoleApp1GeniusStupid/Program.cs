@@ -84,3 +84,8 @@ static void Test(string name)
 
 
 }
+
+static void Che()
+{
+
+}
