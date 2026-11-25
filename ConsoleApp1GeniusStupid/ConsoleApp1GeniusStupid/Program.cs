@@ -32,7 +32,7 @@ static void Test(string name)
 
         if (answer == answers[randomId])
         {
-            rightAnswercnt += 1;//hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhкккккhввв
+            rightAnswercnt += 1;//hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhкккккhввв55555555555555555555555555555555555555
         } 
 
         questions.RemoveAt(randomId);
