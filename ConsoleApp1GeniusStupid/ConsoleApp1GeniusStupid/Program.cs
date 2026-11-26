@@ -7,17 +7,26 @@ if (File.Exists(filePath))
     Console.WriteLine("История игроков : ");
     Console.WriteLine();
     string[] allRecords = File.ReadAllLines(filePath);
-    foreach (string line in allRecords)
+    string[,] resultsMassive = new string[allRecords.Length, 3];
+    for(int i = 0; i < allRecords.Length; i ++)
     {
-        Console.WriteLine(line);
-       
+        string[] dataLine = allRecords[i].Split('|');
+
+
+        for (int j = 0; j < 3; j ++)
+        {
+            resultsMassive[i, j] = dataLine[j];
+        }
     }
+    
+    PrintHistory(resultsMassive);
 
 
     Console.WriteLine();
 }
 else
 {
+    var fileCreate = File.Create(filePath);
     Console.WriteLine("Нет результатов");
 }
 
@@ -71,6 +80,40 @@ static void Test(string name, string filePath)
     int percentAnswers = (rightAnswercnt * 100) / questionsListCnt;
     Console.WriteLine(percentAnswers);
 
+    result = GetResult(percentAnswers);
+
+
+    Console.WriteLine(percentAnswers);
+    Console.WriteLine(name + ", вы " + result);
+
+    string playerData = $"{name}|{percentAnswers}|{result} {Environment.NewLine}";
+
+    File.AppendAllText(filePath, playerData);
+    
+
+    Console.WriteLine("Хотите повторить? да/нет");
+    string ans = Console.ReadLine();
+
+    if (ans == "да")
+    {
+        Test(name, filePath);
+    }
+
+
+}
+
+
+static void PrintHistory(string[,] dataLines)
+{
+    for(int i = 0; i < dataLines.GetLength(0); i ++)
+    {
+        Console.WriteLine($"{dataLines[i, 0], -15} | {dataLines[i,1] + "%", -4} | {dataLines[i, 2], -10}");
+    }
+}
+
+static string GetResult(int percentAnswers)
+{
+    string result = "";
     if (percentAnswers < 15)
     {
         result = "кретин";
@@ -110,47 +153,5 @@ static void Test(string name, string filePath)
             }
         }
     }
-
-
-    //switch (rightAnswercnt)
-    //{
-    //    case 5:
-    //        result = "Гений";
-    //        break;
-    //    case 4:
-    //        result = "Талант";
-    //        break;
-    //    case 3:
-    //        result = "Нормальный";
-    //        break;
-    //    case 2:
-    //        result = "Дурак";
-    //        break;
-    //    case 1:
-    //        result = "Кретин";
-    //        break;
-    //    case 0:
-    //        result = "Идиот";
-    //        break;
-
-    //}
-
-    Console.WriteLine(percentAnswers);
-    Console.WriteLine(name + ", вы " + result);
-
-    string playerData = $"{name}: {percentAnswers}% правильно, статус: {result} {Environment.NewLine}";
-
-    File.AppendAllText(filePath, playerData);
-    
-
-    Console.WriteLine("Хотите повторить? да/нет");
-    string ans = Console.ReadLine();
-
-    if (ans == "да")
-    {
-        Test(name, filePath);
-    }
-
-
+    return result;
 }
-
