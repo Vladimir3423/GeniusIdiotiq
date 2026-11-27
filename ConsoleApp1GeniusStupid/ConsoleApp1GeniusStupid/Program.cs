@@ -1,6 +1,7 @@
 ﻿using System.Net.NetworkInformation;
 string filePath = "Players.txt";
 
+//щщщщщщщщщщщщщщ
 
 if (File.Exists(filePath))
 {
@@ -33,16 +34,39 @@ else
 Console.WriteLine("Как вас зовут?");
 string name = Console.ReadLine();
 
+string questPith = "qest.txt";
+string ansPith = "answers.txt";
+
+List<string> questions = new List<string>() { "2 плюс 2 * 2?", "бревно нужно распилить на 10 частей, склбко нжно разрезов?", "На двух руках 10 пальцев, сколько пальцев на 5 руках?", "Укол делают каждые полчаса. Сколько нужно минут для трех уколов?", "5 свечей горело, 3 потухли, сколько свечей осталось?", "Сколько секунд в 3 минутах?", "33 + 77", "четверть часа это сколько минут?" };
+List<string> answers = new List<string>() { "6", "9", "25", "60", "2", "180", "110", "15" };
+
+if(!(File.Exists(questPith)))
+{
+    for(int i = 0; i < questions.Count; i ++)
+    {
+        File.AppendAllText(questPith, $"{questions[i]} {Environment.NewLine}");
+        File.AppendAllText(ansPith, $"{answers[i]} {Environment.NewLine}");
+    }
+}
+
+string[] fileQuestions = File.ReadAllLines(questPith);
+string[] fileAnswers = File.ReadAllLines(ansPith);
+
+List<string> allQuestions = new List<string>(fileQuestions);
+List<string> allAnswers = new List<string>(fileAnswers);
 
 
-Test(name, filePath);
 
-static void Test(string name, string filePath)
+Test(name, filePath, allQuestions, allAnswers);
+
+AddQuest(questPith, ansPith);
+
+static void Test(string name, string filePath, List<string> questions, List<string> answers)
 {
     int rightAnswercnt = 0;
 
-    List<string> questions = new List<string>() { "2 плюс 2 * 2?", "бревно нужно распилить на 10 частей, склбко нжно разрезов?", "На двух руках 10 пальцев, сколько пальцев на 5 руках?", "Укол делают каждые полчаса. Сколько нужно минут для трех уколов?", "5 свечей горело, 3 потухли, сколько свечей осталось?", "Сколько секунд в 3 минутах?", "33 + 77", "четверть часа это сколько минут?" };
-    List<string> answers = new List<string>() { "6", "9", "25", "60", "2", "180", "110", "15" };
+    //List<string> questions = new List<string>() { "2 плюс 2 * 2?", "бревно нужно распилить на 10 частей, склбко нжно разрезов?", "На двух руках 10 пальцев, сколько пальцев на 5 руках?", "Укол делают каждые полчаса. Сколько нужно минут для трех уколов?", "5 свечей горело, 3 потухли, сколько свечей осталось?", "Сколько секунд в 3 минутах?", "33 + 77", "четверть часа это сколько минут?" };
+    //List<string> answers = new List<string>() { "6", "9", "25", "60", "2", "180", "110", "15" };
     int questionsListCnt = questions.Count;
 
     //string[] answersUser = { };
@@ -96,7 +120,7 @@ static void Test(string name, string filePath)
 
     if (ans == "да")
     {
-        Test(name, filePath);
+        Test(name, filePath, questions, answers);
     }
 
 
@@ -154,4 +178,28 @@ static string GetResult(int percentAnswers)
         }
     }
     return result;
+}
+
+
+
+static void AddQuest(string questPith, string answersPith)
+{
+    Console.WriteLine("Хотите добваить свой новый вопрос? y/n");
+    string userAns = Console.ReadLine();
+
+    if(userAns == "y")
+    {
+        Console.WriteLine("Введите свой вопрос");
+        string newQest = Console.ReadLine();
+        Console.WriteLine("Введите ответ на ваш вопрос");
+        string newAns = Console.ReadLine();
+
+        File.AppendAllText(questPith, newQest);
+        File.AppendAllText(answersPith, newAns);
+
+        Console.WriteLine("Гтово");
+
+
+
+    }
 }
